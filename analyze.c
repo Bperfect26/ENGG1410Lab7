@@ -1,28 +1,52 @@
+/* Lab7 Part2 : analysis of text */
+
 #include <stdio.h>
 #include <string.h>
 
-int main(void) {
-    char line[64];
-    char reversed[64];
-    int len, i, j;
-    printf("Enter a line of text:\n");
-    if (fgets(line, 64, stdin) == NULL) {
-        return 0;
+#define MAX 1000 /* The maximum number of characters in a line of input */
+
+int main()
+{
+  char text[MAX], c;
+  int i;
+  int lowercase, uppercase, digits, other;
+  int length;
+
+  puts("Type some text (then ENTER):");
+
+  /* Save typed characters in text[]: */
+
+  for (i = 0; i < MAX; i++)
+  {
+    text[i] = getchar();
+    if (text[i] == '\n')
+      break;
+  }
+  length = i; // Actual length of input string
+
+  /* Analyze contents of text[]: */
+
+  for (i = lowercase = uppercase = digits = other = 0; i < length; i++)
+  {
+    c = text[i];
+    if (c >= 'a' && c <= 'z')
+      lowercase++;
+    else if (c >= 'A' && c <= 'Z')
+      uppercase++;
+    else if (c >= '0' && c <= '9')
+      digits++;
+    else
+    {
+      if (c == '\n')
+        break;
+      other++;
     }
-    len = strlen(line);
-    if (len > 0 && line[len - 1] == '\n') {
-        line[len - 1] = '\0';
-        len--;
-    }
-    i = 0;
-    j = len - 1;
-    while (j >= 0) {
-        reversed[i] = line[j];
-        i++;
-        j--;
-    }
-    reversed[i] = '\0';
-    printf("Your input in reverse is:\n");
-    printf("%s\n", reversed);
-    return 0;
+  }
+
+  puts("\nYou typed:");
+  printf("A string with %d characters\n", length);
+  printf("\t%d lower case letters\n", lowercase);
+  printf("\t%d upper case letters\n", uppercase);
+  printf("\t%d digits\n", digits);
+  printf("\t%d others\n", other);
 }
